@@ -1,4 +1,4 @@
-package com.example.demo.web;
+package com.example.ambulance.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

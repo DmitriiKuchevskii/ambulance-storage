@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.ambulance;
 
-import com.example.demo.domain.User;
+import com.example.ambulance.domain.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 @SpringBootApplication
-public class DemoApplication {
+public class AmbulanceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(AmbulanceApplication.class, args);
     }
 
     @Bean

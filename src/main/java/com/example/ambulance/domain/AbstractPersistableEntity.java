@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.ambulance.domain;
 
 import lombok.Getter;
 import lombok.Setter;

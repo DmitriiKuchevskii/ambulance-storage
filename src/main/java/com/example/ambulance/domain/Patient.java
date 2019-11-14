@@ -1,6 +1,7 @@
-package com.example.demo.domain;
+package com.example.ambulance.domain;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -16,17 +17,35 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Patient extends AbstractAuditableEntity<User, Long> implements Serializable {
+    @Column
+    @NotNull
+    private Date date;
 
     @Column
     @NotEmpty
-    private String name;
+    private String team;
 
     @Column
     @NotEmpty
-    private String surname;
+    private String code;
 
     @Column
-    private String patronymic;
+    @NotEmpty
+    private String result;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Sex sex;
+
+    @Column
+    @NotNull
+    @Range(min = 0, max = 150)
+    private Long age;
+
+    @Column
+    @NotEmpty
+    private String fullName;
 
     @Column
     @NotEmpty
@@ -34,20 +53,13 @@ public class Patient extends AbstractAuditableEntity<User, Long> implements Seri
 
     @Column
     @NotNull
-    private long passportSeries;
+    private Boolean regularPatient;
 
     @Column
     @NotNull
-    private long passportNumber;
+    private Boolean homeless;
 
     @Column
-    @NotNull
-    private long medicalInsuranceNumber;
-
-    @Column
-    @NotNull
-    private Date dob;
-
-    @Column
+    @NotEmpty
     private String data;
 }

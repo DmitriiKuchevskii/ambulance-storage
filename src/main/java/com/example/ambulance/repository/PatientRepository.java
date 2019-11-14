@@ -1,11 +1,9 @@
-package com.example.demo.repository;
+package com.example.ambulance.repository;
 
-import com.example.demo.domain.Patient;
-import com.example.demo.domain.User;
+import com.example.ambulance.domain.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

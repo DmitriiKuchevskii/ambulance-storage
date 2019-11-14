@@ -1,12 +1,9 @@
-package com.example.demo;
+package com.example.ambulance;
 
-import com.example.demo.domain.Patient;
-import com.example.demo.domain.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.PatientRepository;
+import com.example.ambulance.domain.User;
+import com.example.ambulance.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
 import org.springframework.security.crypto.password.PasswordEncoder;

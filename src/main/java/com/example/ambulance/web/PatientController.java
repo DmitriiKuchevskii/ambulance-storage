@@ -1,16 +1,13 @@
-package com.example.demo.web;
+package com.example.ambulance.web;
 
-import com.example.demo.domain.Patient;
-import com.example.demo.repository.PatientRepository;
+import com.example.ambulance.domain.Patient;
+import com.example.ambulance.repository.PatientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -43,15 +40,17 @@ public class PatientController {
     @PostMapping("/Add")
     public ResponseEntity add(@RequestBody PatientForm form) {
         Patient patient = Patient.builder()
-                .name(form.getName())
-                .surname(form.getSurname())
-                .patronymic(form.getPatronymic())
+                .fullName(form.getFullName())
                 .address(form.getAddress())
-                .passportSeries(form.getPassportSeries())
-                .passportNumber(form.getPassportNumber())
-                .medicalInsuranceNumber(form.getMedicalInsuranceNumber())
-                .dob(form.getDob())
+                .age(form.getAge())
+                .code(form.getCode())
                 .data(form.getData())
+                .homeless(form.getHomeless())
+                .regularPatient(form.getRegularPatient())
+                .result(form.getResult())
+                .sex(form.getSex())
+                .date(form.getDate())
+                .team(form.getTeam())
                 .build();
         patients.save(patient);
         return ok(Map.of("id", patient.getId()));

@@ -1,8 +1,8 @@
-package com.example.demo.web;
+package com.example.ambulance.web;
 
-import com.example.demo.domain.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.security.jwt.JwtTokenProvider;
+import com.example.ambulance.domain.User;
+import com.example.ambulance.repository.UserRepository;
+import com.example.ambulance.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;

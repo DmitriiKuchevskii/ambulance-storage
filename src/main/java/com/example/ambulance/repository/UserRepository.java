@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.example.ambulance.repository;
 
-import com.example.demo.domain.User;
+import com.example.ambulance.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

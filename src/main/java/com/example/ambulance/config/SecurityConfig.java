@@ -1,13 +1,11 @@
-package com.example.demo.config;
+package com.example.ambulance.config;
 
-import com.example.demo.security.jwt.JwtAuthenticationEntryPoint;
-import com.example.demo.security.jwt.JwtSecurityConfigurer;
-import com.example.demo.security.jwt.JwtTokenProvider;
+import com.example.ambulance.security.jwt.JwtAuthenticationEntryPoint;
+import com.example.ambulance.security.jwt.JwtSecurityConfigurer;
+import com.example.ambulance.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

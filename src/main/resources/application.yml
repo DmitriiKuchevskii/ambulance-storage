@@ -1,5 +1,10 @@
 server:
-  port: 4782
+  port: ${APPLICATION_KEYSTORE_FILE:4782}
+  ssl:
+    enabled: true
+    key-store: ${APPLICATION_KEYSTORE_FILE}
+    key-store-password: ${APPLICATION_KEYSTORE_PASSWORD}
+    key-store-type: ${APPLICATION_KEYSTORE_TYPE}
 
 spring:
   jackson:
@@ -16,9 +21,9 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: testuser
-    password: testuser
+    url: ${APPLICATION_DB_URL}
+    username: ${APPLICATION_DB_USERNAME}
+    password: ${APPLICATION_DB_PASSWORD}
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
@@ -45,3 +50,4 @@ logging:
     com.example: DEBUG
   file: app.log
   
+

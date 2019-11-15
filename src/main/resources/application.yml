@@ -1,5 +1,5 @@
 server:
-  port: ${APPLICATION_KEYSTORE_FILE:4782}
+  port: ${APPLICATION_PORT:4782}
   ssl:
     enabled: true
     key-store: ${APPLICATION_KEYSTORE_FILE}

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class JwtProperties {
 
-	private final String secretKey = System.getenv("APPLICATION_JWT_SECRET_KEY");
+    private final String secretKey = System.getenv("APPLICATION_JWT_SECRET_KEY");
 
-	//validity in milliseconds
-	private long validityInMs = 3600000; // 1h
+    //validity in milliseconds
+    private long validityInMs = 3600000; // 1h
 }

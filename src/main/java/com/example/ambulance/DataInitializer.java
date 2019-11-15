@@ -16,20 +16,33 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
+    private static final String APPLICATION_DEFAULT_ADMIN_NAME = System.getenv("APPLICATION_DEFAULT_ADMIN_NAME");
+    private static final String APPLICATION_DEFAULT_ADMIN_PASS = System.getenv("APPLICATION_DEFAULT_ADMIN_PASS");
+
     private final UserRepository users;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
-        if (users.findByUsername("admin").isPresent())
-            return;
-
-        this.users.save(User.builder()
-            .username("admin")
-            .password(this.passwordEncoder.encode("h_jc2qLD0ky0RsrhlSvgvT845Zk"))
-            .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
-            .build()
-        );
+        if (APPLICATION_DEFAULT_ADMIN_NAME == null) {
+            log.info("APPLICATION_DEFAULT_ADMIN_NAME env variable is not provided. Assuming no need to create anything.");
+        } else if (users.findByUsername(APPLICATION_DEFAULT_ADMIN_NAME).isPresent()) {
+            log.info("Default admin name {} is present in system. No need to create a new one.", APPLICATION_DEFAULT_ADMIN_NAME);
+        } else if (APPLICATION_DEFAULT_ADMIN_NAME.isEmpty()) {
+            log.warn("APPLICATION_DEFAULT_ADMIN_NAME env variable is provided but it is empty. Admin user will not be created.");
+        } else if (APPLICATION_DEFAULT_ADMIN_PASS == null) {
+            log.warn("APPLICATION_DEFAULT_ADMIN_NAME was provided, but APPLICATION_DEFAULT_ADMIN_PASS wasn't. Admin user will not be created");
+        } else if (APPLICATION_DEFAULT_ADMIN_PASS.isEmpty()) {
+            log.warn("APPLICATION_DEFAULT_ADMIN_NAME was provided, but APPLICATION_DEFAULT_ADMIN_PASS is empty. Admin user will not be created");
+        } else {
+            log.info("Default admin name {} is not present in system. Creating a new one with default password", APPLICATION_DEFAULT_ADMIN_NAME);
+            this.users.save(User.builder()
+                    .username(APPLICATION_DEFAULT_ADMIN_NAME)
+                    .password(this.passwordEncoder.encode(APPLICATION_DEFAULT_ADMIN_PASS))
+                    .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+                    .build()
+            );
+        }
     }
 }

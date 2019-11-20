@@ -2,6 +2,7 @@ package com.example.ambulance.domain;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +20,7 @@ import java.util.Date;
 public class Patient extends AbstractAuditableEntity<User, Long> implements Serializable {
     @Column
     @NotNull
+    @DateTimeFormat(pattern = "YYYY-MM-DD:HH:mm")
     private Date date;
 
     @Column

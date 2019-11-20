@@ -28,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
         if (APPLICATION_DEFAULT_ADMIN_NAME == null) {
             log.info("APPLICATION_DEFAULT_ADMIN_NAME env variable is not provided. Assuming no need to create anything.");
         } else if (users.findByUsername(APPLICATION_DEFAULT_ADMIN_NAME).isPresent()) {
-            log.info("Default admin name {} is present in system. No need to create a new one.", APPLICATION_DEFAULT_ADMIN_NAME);
+            log.info("Default admin name '{}' is present in system. No need to create a new one.", APPLICATION_DEFAULT_ADMIN_NAME);
         } else if (APPLICATION_DEFAULT_ADMIN_NAME.isEmpty()) {
             log.warn("APPLICATION_DEFAULT_ADMIN_NAME env variable is provided but it is empty. Admin user will not be created.");
         } else if (APPLICATION_DEFAULT_ADMIN_PASS == null) {
@@ -36,7 +36,7 @@ public class DataInitializer implements CommandLineRunner {
         } else if (APPLICATION_DEFAULT_ADMIN_PASS.isEmpty()) {
             log.warn("APPLICATION_DEFAULT_ADMIN_NAME was provided, but APPLICATION_DEFAULT_ADMIN_PASS is empty. Admin user will not be created");
         } else {
-            log.info("Default admin name {} is not present in system. Creating a new one with default password", APPLICATION_DEFAULT_ADMIN_NAME);
+            log.info("Default admin name '{}' is not present in system. Creating a new one with default password", APPLICATION_DEFAULT_ADMIN_NAME);
             this.users.save(User.builder()
                     .username(APPLICATION_DEFAULT_ADMIN_NAME)
                     .password(this.passwordEncoder.encode(APPLICATION_DEFAULT_ADMIN_PASS))

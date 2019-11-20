@@ -1,10 +1,10 @@
 server:
   port: ${APPLICATION_PORT:4782}
-  ssl:
-    enabled: ${APPLICATION_USE_SSL:true}
-    key-store: ${APPLICATION_KEYSTORE_FILE}
-    key-store-password: ${APPLICATION_KEYSTORE_PASSWORD}
-    key-store-type: ${APPLICATION_KEYSTORE_TYPE}
+#  ssl:
+#    enabled: ${APPLICATION_USE_SSL:true}
+#    key-store: ${APPLICATION_KEYSTORE_FILE}
+#    key-store-password: ${APPLICATION_KEYSTORE_PASSWORD}
+#    key-store-type: ${APPLICATION_KEYSTORE_TYPE}
 
 spring:
   jackson:
@@ -17,7 +17,7 @@ spring:
       FAIL_ON_IGNORED_PROPERTIES: false
       FAIL_ON_UNKNOWN_PROPERTIES: false
       ACCEPT_SINGLE_VALUE_AS_ARRAY: true
-    default-property-inclusion: non_empty 
+    default-property-inclusion: non_empty
 
 
   datasource:
@@ -42,6 +42,8 @@ spring:
   data:
     jpa:
       repositories.enabled: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
 
 logging:
   level:

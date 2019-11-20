@@ -27,28 +27,14 @@ public class AuthenticationController {
 
     private final UserRepository users;
 
-    private final PasswordEncoder passwordEncoder;
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest data) {
         String username = data.getUsername();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-        String token = jwtTokenProvider.createToken(username,
-                users.findByUsername(username)
+        String token = jwtTokenProvider.createToken(username, users.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"))
                         .getRoles()
         );
         return ok(Map.of("username", username, "token", token));
-    }
-
-    @PostMapping("api/admin/newUser")
-    public ResponseEntity newUser(@RequestBody NewUserRequest newUser) {
-        this.users.save(User.builder()
-                .username(newUser.getUsername())
-                .password(this.passwordEncoder.encode(newUser.getPassword()))
-                .roles(newUser.getRoles())
-                .build()
-        );
-        return ok(Map.of("username", newUser.getUsername(), "roles", newUser.getRoles()));
     }
 }

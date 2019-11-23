@@ -4,64 +4,52 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
+    private static final String JWT_CLAIMS_ROLES = "roles";
 
-    private final JwtProperties jwtProperties;
+    private static final String JWT_SECRET_KEY = System.getenv("APPLICATION_JWT_SECRET_KEY");
 
-    private final UserDetailsService userDetailsService;
+    private static final long JWT_TOKEN_VALIDITY = Long.parseLong(System.getenv("APPLICATION_JWT_SECRET_KEY_VALIDITY"));
 
-    private final String secretKey;
-
-    public JwtTokenProvider(JwtProperties jwtProperties, @Qualifier("customUserDetailsService") UserDetailsService userDetailsService) {
-        this.jwtProperties = jwtProperties;
-        this.userDetailsService = userDetailsService;
-        secretKey = Base64.getEncoder().encodeToString(jwtProperties.getSecretKey().getBytes());
-    }
-
-    public String createToken(String username, List<String> roles) {
+    public String createToken(String username, List<Roles> roles) {
 
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
+        claims.put(JWT_CLAIMS_ROLES, roles.stream().map(Roles::name).collect(Collectors.joining(",")));
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getValidity());
+        Date validity = new Date(now.getTime() + JWT_TOKEN_VALIDITY);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY)
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    Authentication getAuthentication(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token);
+
+        String userName = claims.getBody().getSubject();
+        String roles = claims.getBody().get(JWT_CLAIMS_ROLES, String.class);
+        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
+
+        return new UsernamePasswordAuthenticationToken(userName, null, authorities);
     }
 
-    private String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public String resolveToken(HttpServletRequest req) {
-        return req.getHeader("JWT");
-    }
-
-    public boolean validateToken(String token) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+    boolean validateToken(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
     }
 

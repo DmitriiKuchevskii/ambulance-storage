@@ -1,19 +1,12 @@
 package com.example.ambulance.security.jwt;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,19 +15,16 @@ import java.io.IOException;
 @Slf4j
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String JWT_TOKEN_HEADER = "JWT";
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(req);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
-
-            if (auth != null) {
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
+        String token = req.getHeader(JWT_TOKEN_HEADER);
+        if (token != null  && jwtTokenProvider.validateToken(token)) {
+            SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token));
         }
         chain.doFilter(req, res);
     }
-
 }

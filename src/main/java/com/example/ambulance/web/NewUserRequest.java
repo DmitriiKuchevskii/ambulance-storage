@@ -1,5 +1,6 @@
 package com.example.ambulance.web;
 
+import com.example.ambulance.security.jwt.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewUserRequest implements Serializable {
+class NewUserRequest implements Serializable {
 	private static final long serialVersionUID = -6986746375915710855L;
 	private String username;
 	private String password;
-	private List<String> roles;
+	private List<Roles> roles;
 }

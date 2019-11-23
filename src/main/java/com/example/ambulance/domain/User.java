@@ -1,5 +1,6 @@
 package com.example.ambulance.domain;
 
+import com.example.ambulance.security.jwt.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,23 +34,13 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Roles.class)
+    @Enumerated(EnumType.STRING)
+    private List<Roles> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(toList());
     }
 
     @Override

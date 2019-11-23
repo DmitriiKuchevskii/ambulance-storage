@@ -3,15 +3,19 @@ package com.example.ambulance.config;
 import com.example.ambulance.security.jwt.FilterErrorHandler;
 import com.example.ambulance.security.jwt.JwtTokenAuthenticationFilter;
 import com.example.ambulance.security.jwt.JwtTokenProvider;
+import com.example.ambulance.security.jwt.Roles;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
@@ -27,6 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        defaultWebSecurityExpressionHandler.setRoleHierarchy(Roles.ROLES_HIERARCHY);
+        return defaultWebSecurityExpressionHandler;
     }
 
     @Override
@@ -47,17 +58,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .contentSecurityPolicy("script-src 'self'")
             .and().and()
             .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
+                .expressionHandler(webExpressionHandler())
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/admin/*").hasRole("ADMIN")
+                .antMatchers("/api/admin/*").hasAuthority(Roles.ROLE_ADMIN.name())
                 .anyRequest().authenticated()
             .and()
                 .addFilterBefore(new FilterErrorHandler(), LogoutFilter.class)
                 .addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
-
-
 }
 

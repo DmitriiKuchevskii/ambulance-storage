@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 public class NewTest {
 
@@ -34,6 +33,7 @@ public class NewTest {
                         .contentType(ContentType.JSON)
                     .and()
                         .body("username", equalTo(DEFAULT_ADMIN_USERNAME))
+                        .body("token", notNullValue())
                     .and();
     }
 

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditableEntity<U, ID> extends AbstractPersistableEntity<ID> implements Serializable {
+abstract class AbstractAuditableEntity<U, ID> extends AbstractPersistableEntity<ID> implements Serializable {
 
     @CreatedDate
     LocalDate createdDate;
@@ -26,11 +26,11 @@ public abstract class AbstractAuditableEntity<U, ID> extends AbstractPersistable
 
     @CreatedBy
     @ManyToOne
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", referencedColumnName = "username")
     U createdBy;
 
     @LastModifiedBy
     @ManyToOne
-    @JoinColumn(name = "last_modified_by")
+    @JoinColumn(name = "last_modified_by",  referencedColumnName = "username")
     U lastModifiedBy;
 }

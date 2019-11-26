@@ -32,14 +32,13 @@ public class AmbulanceApplication {
 @Configuration
 @EnableJpaAuditing
 class DataJpaConfig {
-
     @Bean
     public AuditorAware<User> auditor() {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
             .map(SecurityContext::getAuthentication)
             .filter(Authentication::isAuthenticated)
             .map(Authentication::getPrincipal)
-            .map(User.class::cast);
+            .map(userName -> new User(-1L, userName.toString(), null, null));
     }
 }
 

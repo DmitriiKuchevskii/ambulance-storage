@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -26,6 +27,7 @@ public class AdminController {
     private final PatientRepository patients;
 
     @PostMapping("/NewUser")
+    @Transactional
     public ResponseEntity newUser(@RequestBody NewUserRequest newUser) {
         users.findByUsername(newUser.getUsername())
                 .ifPresent(user -> { throw new UserAlreadyExistsException(user); });
@@ -51,6 +53,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/Remove")
+    @Transactional
     public ResponseEntity remove(@RequestHeader(value="id") Long id) {
         Patient patient = patients.findById(id)
                 .orElseThrow(() -> new PatientDoesNotExistException(id));

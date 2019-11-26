@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -14,6 +15,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
+@Transactional
 public class PatientController {
 
     private final PatientRepository patients;

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class User implements UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = Roles.class)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private List<Roles> roles;
 
     @Override

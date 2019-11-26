@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -32,7 +33,7 @@ public class PatientController {
     }
 
     @PostMapping("/Add")
-    public ResponseEntity add(@RequestBody PatientForm form) {
+    public ResponseEntity add(@RequestBody @Valid PatientForm form) {
         Patient patient = Patient.builder()
                 .fullName(form.getFullName())
                 .address(form.getAddress())

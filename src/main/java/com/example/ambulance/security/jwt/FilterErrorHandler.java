@@ -23,10 +23,10 @@ public class FilterErrorHandler extends OncePerRequestFilter {
             chain.doFilter(req, res);
         } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException exc) {
             log.info("Access denied because of incorrect token format: {}", exc.toString());
-            res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid authorisation format");
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } catch (SignatureException | ExpiredJwtException exc) {
-            log.info("Access denied because of invalid toke: {}", exc.toString());
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access denied");
+            log.info("Access denied because of invalid token: {}", exc.toString());
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }

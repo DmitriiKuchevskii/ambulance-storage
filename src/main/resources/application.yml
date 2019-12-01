@@ -9,14 +9,14 @@ server:
 spring:
   jackson:
     mapper:
-      DEFAULT_VIEW_INCLUSION: true 
+      DEFAULT_VIEW_INCLUSION: on
     serialization: 
-      indent_output: true
+      indent_output: on
       WRITE_DATES_AS_TIMESTAMPS: false
     deserialization:
       FAIL_ON_IGNORED_PROPERTIES: false
       FAIL_ON_UNKNOWN_PROPERTIES: false
-      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: on
     default-property-inclusion: non_empty
 
 
@@ -27,8 +27,8 @@ spring:
 
   jpa:
     openInView: false
-    show_sql: true
-    generate-ddl: true
+    show_sql: on
+    generate-ddl: on
     hibernate:
       ddl-auto: update
     properties:
@@ -37,7 +37,7 @@ spring:
 
   data:
     jpa:
-      repositories.enabled: true
+      repositories.enabled: on
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
 

@@ -38,7 +38,7 @@ interface IApiMethods {
 
 class ApiMethods implements IApiMethods
 {
-    private static final String HOST = "http://localhost:4782/api/";
+    private static final String HOST = "http://localhost:4782";
     private static final String DEFAULT_ADMIN_USERNAME = System.getenv("APPLICATION_DEFAULT_ADMIN_NAME");
     private static final String DEFAULT_ADMIN_PASSWORD = System.getenv("APPLICATION_DEFAULT_ADMIN_PASS");
     private final Header AUTH_HEADER = new Header("JWT",
@@ -60,7 +60,7 @@ class ApiMethods implements IApiMethods
     public Response login(AuthenticationRequest authenticationRequest) {
         return call(Map.of("username", authenticationRequest.getUsername(),
                            "password", authenticationRequest.getPassword()))
-                .post(HOST + AmbulanceApi.API_LOGIN);
+                .post(HOST + AmbulanceApi.API_LOGIN_ROOT_REQUEST_MAP + AmbulanceApi.API_LOGIN);
     }
 
     @Override
@@ -78,7 +78,7 @@ class ApiMethods implements IApiMethods
                 .date(newPatientRequest.getDate())
                 .team(newPatientRequest.getTeam())
                 .build();
-        return authCall(patient).post(HOST + AmbulanceApi.API_ADD_PATIENT);
+        return authCall(patient).post(HOST + AmbulanceApi.API_USER_ROOT_REQUEST_MAP + AmbulanceApi.API_ADD_PATIENT);
     }
 
     @Override

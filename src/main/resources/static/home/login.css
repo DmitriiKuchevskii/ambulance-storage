@@ -1,0 +1,69 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html, body{
+  overflow: visible;
+  font-size: 14px;
+  min-width: 320px;
+}
+body{
+  width: 100%;
+  height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Bordered form */
+form {
+  border: 3px solid #f1f1f1;
+}
+  
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px auto;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+  
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px auto;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+  
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+  
+  
+/* Add padding to containers */
+.container {
+  width: 100%;
+  padding: 16px;
+  margin: auto;
+}
+
+@media only screen and (min-width: 680px){
+  .container{
+    width: 60%;
+  }
+}
+
+@media only screen and (min-width: 1140px){
+  .container{
+    width: 40%;
+  }
+}

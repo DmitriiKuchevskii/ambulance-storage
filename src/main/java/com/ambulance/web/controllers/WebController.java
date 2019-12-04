@@ -12,14 +12,8 @@ public class WebController {
 
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/home/index.html";
     }
-
-    @GetMapping("/cards")
-    public String cards() {
-        return "cards";
-    }
-
 }
 
 

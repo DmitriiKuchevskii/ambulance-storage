@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset='utf-8'>
+	<link rel='stylesheet' type='text/css' href='cardsStyle.css'>
+	<title> cards </title>
+</head>
+<body>
+    <h1>Карты</h1>
+    <a href="../new-card/new-card.html" class="btn createBtn">Создать карту</a>
+    <button class="btn" type="button" onclick="clearTable(); fillTheTable(patientArray);">Показать все</button>
+    <section class="searchSection">
+        <input type="text" name="search" placeholder="Поиск" class="searchInput">
+        <span>Поиск по</span>
+        <select name="search-select" class="searchSelect">
+            <option value="date">Дата</option>
+            <option value="team">Наряд</option>
+            <option value="code">Код МКБ</option>
+            <option value="result">Результат</option>
+            <option value="id">ID</option>
+            <option value="fullName">ФИО</option>
+            <option value="address">Адрес</option>
+            <option value="responsible">Ответственный</option>
+        </select>
+        <button class="btn" type="button" onclick="search()">искать</button>            
+    </section>
+    <hr>
+    <section class="table">
+        <table id="table">
+            <tr>
+                <th>Дата</th>
+                <th>Наряд</th>
+                <th>Код МКБ</th>
+                <th>Результат</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Адрес</th>
+                <th>Ответственный</th>
+            </tr>
+        </table>
+    </section>
+
+    <script src='cardsScript.js'></script>
+</body>
+</html>

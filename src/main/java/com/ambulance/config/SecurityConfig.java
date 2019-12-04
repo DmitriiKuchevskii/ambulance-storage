@@ -87,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
                 .antMatchers("/").permitAll()
+                .antMatchers("/home/*").permitAll()
                 .antMatchers(AmbulanceApi.API_LOGIN_ROOT_REQUEST_MAP + AmbulanceApi.API_LOGIN).permitAll()
                 .antMatchers(AmbulanceApi.API_ADMIN_ROOT_REQUEST_MAP + "/*").hasAuthority(Roles.ROLE_ADMIN)
                 .anyRequest().authenticated()

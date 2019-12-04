@@ -23,6 +23,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -58,6 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultWebSecurityExpressionHandler;
     }
 
+    @Bean
+    public InternalResourceViewResolver internalResourceViewResolver() {
+        return new InternalResourceViewResolver("/", ".html");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -80,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
+                .antMatchers("/").permitAll()
                 .antMatchers(AmbulanceApi.API_LOGIN_ROOT_REQUEST_MAP + AmbulanceApi.API_LOGIN).permitAll()
                 .antMatchers(AmbulanceApi.API_ADMIN_ROOT_REQUEST_MAP + "/*").hasAuthority(Roles.ROLE_ADMIN)
                 .anyRequest().authenticated()

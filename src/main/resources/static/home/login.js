@@ -3,7 +3,7 @@ function login(){
     var logpass = {username:"", password:""};
     logpass.username = document.querySelector("input[name='uname']").value;
     logpass.password = document.querySelector("input[name='psw']").value;
-    var url = "https://kuchevskii.com:/api/Login";
+    var url = "https://kuchevskii.com/api/Login";
     xhttp.open("POST", url ,true);
     xhttp.setRequestHeader("content-type", "application/json");
     xhttp.onreadystatechange = respose;

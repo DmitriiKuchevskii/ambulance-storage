@@ -4,6 +4,8 @@ import com.ambulance.domain.Sex;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.jackson.JsonComponent;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,39 +15,39 @@ import java.util.Date;
 @Data
 @Builder
 @AllArgsConstructor
-public class NewPatientRequest implements Serializable {
-    private static final long serialVersionUID = -7280379800686242875L;
+@NoArgsConstructor
+@JsonComponent
+public class NewPatientRequest {
+    @NotNull
+    private Date date;
+
+    @NotEmpty
+    private String team;
+
+    @NotEmpty
+    private String code;
+
+    @NotEmpty
+    private String result;
 
     @NotNull
-    private final Date date;
-
-    @NotEmpty
-    private final String team;
-
-    @NotEmpty
-    private final String code;
-
-    @NotEmpty
-    private final String result;
+    private Sex sex;
 
     @NotNull
-    private final Sex sex;
-
-    @NotNull
-    private final Long age;
+    private Long age;
 
     @NotEmpty
-    private final String fullName;
+    private String fullName;
 
     @NotEmpty
-    private final String address;
+    private String address;
 
     @NotNull
-    private final Boolean regularPatient;
+    private Boolean regularPatient;
 
     @NotNull
-    private final Boolean homeless;
+    private Boolean homeless;
 
     @NotEmpty
-    private final String data;
+    private String data;
 }

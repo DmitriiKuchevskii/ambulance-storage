@@ -3,6 +3,8 @@ package com.ambulance.web.requests;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.jackson.JsonComponent;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -11,16 +13,16 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class NewUserRequest implements Serializable {
-
-    private static final long serialVersionUID = 6198221426165031927L;
-
-    @NotEmpty
-    private final String username;
+@NoArgsConstructor
+@JsonComponent
+public class NewUserRequest {
 
     @NotEmpty
-    private final String password;
+    private String username;
 
     @NotEmpty
-    private final List<String> roles;
+    private String password;
+
+    @NotEmpty
+    private List<String> roles;
 }

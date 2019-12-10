@@ -7,12 +7,15 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class NewPatientRequest {
+public class NewPatientRequest implements Serializable {
+    private static final long serialVersionUID = -7280379800686242875L;
+
     @NotNull
     private final Date date;
 

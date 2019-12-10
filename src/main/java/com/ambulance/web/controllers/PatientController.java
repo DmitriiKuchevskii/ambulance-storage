@@ -20,7 +20,6 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping(AmbulanceApi.API_USER_ROOT_REQUEST_MAP)
 @AllArgsConstructor
-@Transactional
 public class PatientController {
 
     private final PatientRepository patients;
@@ -30,13 +29,14 @@ public class PatientController {
         return ok(patients.findAllPatientInfoOnlyBy());
     }
 
-    @GetMapping(AmbulanceApi.API_GET_PATIENT)
+    @PostMapping(AmbulanceApi.API_GET_PATIENT)
     public ResponseEntity<?> one(@RequestBody @Valid PatientIdRequest form) {
         return ok(patients.findOnePatientInfoOnlyById(form.getPatientId())
-                    .orElseThrow(() -> new PatientDoesNotExistException(form.getPatientId())));
+                .orElseThrow(() -> new PatientDoesNotExistException(form.getPatientId())));
     }
 
     @PostMapping(AmbulanceApi.API_ADD_PATIENT)
+    @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid NewPatientRequest form) {
         Patient patient = Patient.builder()
                 .fullName(form.getFullName())

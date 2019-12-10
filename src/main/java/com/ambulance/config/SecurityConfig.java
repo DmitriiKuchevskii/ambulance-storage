@@ -6,7 +6,6 @@ import com.ambulance.security.Roles;
 import com.ambulance.security.jwt.JwtFilterExceptionHandler;
 import com.ambulance.security.jwt.JwtTokenAuthenticationFilter;
 import com.ambulance.security.jwt.JwtTokenProvider;
-import com.ambulance.web.AmbulanceApi;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +25,12 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static com.ambulance.security.Roles.ROLE_ADMIN;
+import static com.ambulance.security.Roles.ROLE_USER;
+import static com.ambulance.web.AmbulanceApiAccessPatterns.*;
+import static com.ambulance.web.WebUiAccessPatterns.*;
+import static org.apache.commons.lang3.ArrayUtils.addAll;
 
 @Configuration
 @EnableWebSecurity
@@ -86,17 +91,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
-                .antMatchers("/").permitAll()
-                .antMatchers("/home/*").permitAll()
-                .antMatchers(AmbulanceApi.API_LOGIN_ROOT_REQUEST_MAP + AmbulanceApi.API_LOGIN).permitAll()
-                .antMatchers(AmbulanceApi.API_ADMIN_ROOT_REQUEST_MAP + "/*").hasAuthority(Roles.ROLE_ADMIN)
-                .anyRequest().authenticated()
+                .antMatchers(addAll(WEB_UI_PUBLICLY_AVAILABLE, API_PUBLICLY_AVAILABLE)).permitAll()
+                .antMatchers(addAll(WEB_UI_ADMIN_ONLY_AVAILABLE, API_ADMIN_ONLY_AVAILABLE)).hasAuthority(ROLE_ADMIN)
+                .antMatchers(addAll(WEB_UI_USER_ONLY_AVAILABLE, API_USER_ONLY_AVAILABLE)).hasAuthority(ROLE_USER)
+                .anyRequest().denyAll()
             .and()
                 .addFilterBefore(new JwtFilterExceptionHandler(), LogoutFilter.class)
                 .addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling()
                 .authenticationEntryPoint((req, res, exc) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
-                .accessDeniedHandler((req, res, exc) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
+                .accessDeniedHandler((req, res, exc) -> res.setStatus(HttpServletResponse.SC_NO_CONTENT));
     }
 }
 

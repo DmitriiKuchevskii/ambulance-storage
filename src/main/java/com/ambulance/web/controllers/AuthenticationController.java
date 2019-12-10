@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -26,9 +27,9 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping(AmbulanceApi.API_LOGIN)
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest data) {
-        String username = data.getUsername();
-        String password = data.getPassword();
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationRequest authenticationRequest) {
+        String username = authenticationRequest.getUsername();
+        String password = authenticationRequest.getPassword();
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         String token = jwtTokenProvider.createToken(username, ((User)auth.getPrincipal()).getRoles());

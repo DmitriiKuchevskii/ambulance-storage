@@ -10,14 +10,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Component
 @Slf4j
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private static final String APPLICATION_DEFAULT_ADMIN_NAME = System.getenv("APPLICATION_DEFAULT_ADMIN_NAME");
-    private static final String APPLICATION_DEFAULT_ADMIN_PASS = System.getenv("APPLICATION_DEFAULT_ADMIN_PASS");
+    private final String APPLICATION_DEFAULT_ADMIN_NAME =
+            Optional.ofNullable(System.getenv("APPLICATION_DEFAULT_ADMIN_NAME")).orElse("");
+
+    private final String APPLICATION_DEFAULT_ADMIN_PASS =
+            Optional.ofNullable(System.getenv("APPLICATION_DEFAULT_ADMIN_PASS")).orElse("");
 
     private final UserRepository users;
 
@@ -25,7 +29,10 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        addDefaultAdminUser();
+    }
 
+    private void addDefaultAdminUser() {
         if (APPLICATION_DEFAULT_ADMIN_NAME == null) {
             log.warn("APPLICATION_DEFAULT_ADMIN_NAME env variable is not provided. Assuming no need to create a new admin user.");
         } else {

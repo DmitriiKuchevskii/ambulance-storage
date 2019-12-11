@@ -7,7 +7,7 @@
 	<title> login </title>
 </head>
 <body>
-	<form onsubmit="return false;">
+	<form id="form">
 	  
 		<div class="container">
 		  <label for="uname"><b>Username</b></label>
@@ -16,9 +16,8 @@
 		  <label for="psw"><b>Password</b></label>
 		  <input type="password" placeholder="Enter Password" name="psw" required>
 	  
-		  <button type="submit" onclick="login()">Login</button>
-
-		  <!--<button type="submit">Registration</button>-->
+		  <button type="button" id="submitBtn">Login</button>
+		  
 		</div>
 
 	</form>

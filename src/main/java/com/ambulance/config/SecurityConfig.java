@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -70,6 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+            .ignoring()
+            .antMatchers(addAll(WEB_UI_PUBLICLY_AVAILABLE, API_PUBLICLY_AVAILABLE));
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .httpBasic().disable()
@@ -91,7 +99,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
-                .antMatchers(addAll(WEB_UI_PUBLICLY_AVAILABLE, API_PUBLICLY_AVAILABLE)).permitAll()
                 .antMatchers(addAll(WEB_UI_ADMIN_ONLY_AVAILABLE, API_ADMIN_ONLY_AVAILABLE)).hasAuthority(ROLE_ADMIN)
                 .antMatchers(addAll(WEB_UI_USER_ONLY_AVAILABLE, API_USER_ONLY_AVAILABLE)).hasAuthority(ROLE_USER)
                 .anyRequest().denyAll()

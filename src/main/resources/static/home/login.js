@@ -15,14 +15,15 @@ function respose(){
     if(xhttp.readyState == 4 && xhttp.status == 200){
         console.log(xhttp.responseText);
         createCookie();
-        window.location.replace("https://kuchevskii.com/home/authorised/cards.html")
+        window.location.replace("https://kuchevskii.com/user/cards.html")
     }
 }
 /*create cookie*/
 function createCookie(){
     let name = "JWT";
-    let value = xhttp.responseText;
-    document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value)
+    let response =  JSON.parse(xhttp.responseText);
+
+    document.cookie = name + '=' + response['token']
        + "; path=/; domain=kuchevskii.com; secure";
 }
 /*

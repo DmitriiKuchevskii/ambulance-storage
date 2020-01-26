@@ -43,6 +43,9 @@ th, td {
     text-align: left;
     padding: 8px;
 }
+tr{
+    position: relative;
+}
 tr:not(:first-child){
     cursor: pointer;
 }
@@ -51,5 +54,18 @@ tr:nth-child(even){
 }
 tr:not(:first-child):hover{
     background-color: rgb(142, 198, 243);
+}
+tr td:last-child{
+    width: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.editBtn, .deleteBtn{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 

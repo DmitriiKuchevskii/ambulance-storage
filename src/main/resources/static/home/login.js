@@ -15,17 +15,17 @@ function respose(){
     if(xhttp.readyState == 4 && xhttp.status == 200){
         console.log(xhttp.responseText);
         createCookie();
-        window.location.replace("https://kuchevskii.com/user/cards.html")
+        window.location.replace("https://kuchevskii.com/user/cards.html");
     }
 }
 /*create cookie*/
 function createCookie(){
     let name = "JWT";
-    let response =  JSON.parse(xhttp.responseText);
-
-    document.cookie = name + '=' + response['token']
+    let value = JSON.parse(xhttp.responseText).token;
+    document.cookie = name + '=' + value
        + "; path=/; domain=kuchevskii.com; secure";
 }
+
 /*
 var ebachObj = {   
     "date":"1993-10-10",

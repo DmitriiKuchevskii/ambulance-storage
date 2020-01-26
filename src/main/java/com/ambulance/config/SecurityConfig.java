@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) {
+    public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
             .antMatchers(addAll(WEB_UI_PUBLICLY_AVAILABLE, API_PUBLICLY_AVAILABLE));

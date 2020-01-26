@@ -3,13 +3,14 @@
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta charset='utf-8'>
-	<link rel='stylesheet' type='text/css' href='cardsStyle.css'>
+    <link rel='stylesheet' type='text/css' href='cardsStyle.css'>
+    <link rel="stylesheet" href="fontawesome/css/all.css">
 	<title> cards </title>
 </head>
 <body>
     <h1>Карты</h1>
-    <a href="../new-card/new-card.html" class="btn createBtn">Создать карту</a>
-    <button class="btn" type="button" onclick="clearTable(); fillTheTable(patientArray);">Показать все</button>
+    <a href="form/index.html" class="btn createBtn">Создать карту</a>
+    <button class="btn" type="button">Показать все</button>
     <section class="searchSection">
         <input type="text" name="search" placeholder="Поиск" class="searchInput">
         <span>Поиск по</span>
@@ -21,9 +22,8 @@
             <option value="id">ID</option>
             <option value="fullName">ФИО</option>
             <option value="address">Адрес</option>
-            <option value="responsible">Ответственный</option>
         </select>
-        <button class="btn" type="button" onclick="search()">искать</button>            
+        <button class="btn" type="button">искать</button>            
     </section>
     <hr>
     <section class="table">
@@ -36,7 +36,7 @@
                 <th>ID</th>
                 <th>ФИО</th>
                 <th>Адрес</th>
-                <th>Ответственный</th>
+                <th></th>
             </tr>
         </table>
     </section>

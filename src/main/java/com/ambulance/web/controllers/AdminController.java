@@ -76,7 +76,7 @@ public class AdminController {
         User curUser = users.findByUsername(curUserName)
                 .orElseThrow(() -> new UsernameNotFoundException(curUserName));
 
-        return ok(patients.findAllPatientInfoOnlyByCreatedBy(curUser));
+        return ok(patients.findAllPatientByCreatedBy(curUser));
     }
 
     @DeleteMapping(AmbulanceApi.API_REMOVE_PATIENT)

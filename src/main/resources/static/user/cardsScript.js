@@ -1,25 +1,20 @@
-/*Get data from server*/
+/*get all patients data, create array of objects, fill the html table*/
+document.getElementsByClassName('btn')[1].addEventListener("click", function(){getAll(fillTheTable);});
 
-/*get all patients data and create array of objects from recieved data*/
-document.addEventListener("load", getAll);
-function getAll(){
-    let url = "https://kuchevskii.com:4782/api/GetAll";
-    let cookieToken = getCookie("token");
-    let token = JSON.parse(cookieToken).token;
+function getAll(cFunc){
+    let url = "https://kuchevskii.com/api/GetAllPatients";
+    let token = getCookie("JWT");
+    var xhttp = new XMLHttpRequest();
     xhttp.open("GET", url ,true);
     xhttp.setRequestHeader("JWT", token);
     xhttp.setRequestHeader("content-type", "application/json");
-    xhttp.onreadystatechange = parseAll;
+    xhttp.onreadystatechange = function(){
+        clearTable();
+        if(xhttp.readyState == 4 && xhttp.status == 200){
+           cFunc(this); /*cFunc is callback function, this key word is refers to XMLHttpRequest object*/
+        }
+    };
     xhttp.send();
-}
-/*all patients data*/
-var patientDataStr;
-/*get patients data from cookies*/
-function parseAll(){
-    if(xhttp.readyState == 4 && xhttp.status == 200){
-        patientDataStr = JSON.parse(xhttp.responseText);
-        return patientDataStr;
-    }
 }
 /*parse cookie*/
 function getCookie(name) {
@@ -28,21 +23,17 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-
-/*array of objects with patients data */
-var patientArray = JSON.parse(patientDataStr);
-
-/*fill the table with patients info*/
-function fillTheTable(array){
-    for(let i = 0; i < array.length; i++){
-        let patientInfo = array[i];
+/*fill the table with all patients info*/
+function fillTheTable(xhttp){
+    var patientArray = JSON.parse(xhttp.responseText);
+    for(let i = 0; i < patientArray.length; i++){
+        let patientInfo = patientArray[i];
         createTableLine(patientInfo);
     }
 }
-
 function createTableLine(patientObj){
-    var table = document.getElementById('table');
-    var tr = document.createElement('tr');
+    let table = document.getElementById('table');
+    let tr = document.createElement('tr');
     table.append(tr);
     for(let i = 0; i < 8; i++){
         var trLast = table.lastChild;
@@ -71,12 +62,40 @@ function createTableLine(patientObj){
                 trLast.lastChild.innerHTML = patientObj.address;
                 break;
             case 7:
-                trLast.lastChild.innerHTML = 'ответственный';
+                let deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'deleteBtn'
+                let iconDel = document.createElement('i');
+                iconDel.className = "fas fa-trash-alt";
+                deleteBtn.append(iconDel);
+                tr.lastChild.append(deleteBtn);
+                let editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'editBtn';
+                let iconEdit = document.createElement('i');
+                iconEdit.className = "fas fa-edit";
+                editBtn.append(iconEdit);
+                tr.lastChild.append(editBtn);
                 break;
         }
     }
 }
-
+function deletePatient(){
+    let xhttp = new XMLHttpRequest();
+    let url = "https://kuchevskii.com/api/RemovePatient";
+    let token = getCookie("JWT");
+    xhttp.open("POST", url ,true);
+    xhttp.setRequestHeader("JWT", token);
+    xhttp.setRequestHeader("content-type", "application/json");
+    xhttp.setRequestHeader("id", 1402);
+    xhttp.onreadystatechange = function(){
+        console.log(xhttp.status);
+        if(xhttp.readyState == 4 && xhttp.status == 200){
+            alert(xhttp.responseText);
+        }
+    };
+    xhttp.send({"id":1402});
+}
 /*clear table*/
 function clearTable(){
     var table = document.getElementById('table');
@@ -88,17 +107,21 @@ function clearTable(){
 }
 
 /*===============SEARCH===============*/
-function search(){
+document.getElementsByClassName('btn')[2].addEventListener("click", function(){getAll(search);});
+function search(xhttp){
+    var patientArray = JSON.parse(xhttp.responseText);
     var word = document.getElementsByClassName("searchInput")[0].value;
-    var result = findPatients(word);
-    clearTable();
-    fillTheTable(result);
+    var result = findPatients(word, patientArray);
+    for(let i = 0; i < result.length; i++){
+        let patientInfo = result[i];
+        createTableLine(patientInfo);
+    }
 }
-function findPatients(inputValue){
+function findPatients(inputValue, array){
     var select = document.getElementsByClassName("searchSelect")[0];
     var resultArray;
     var value = select.value;
-    resultArray = patientArray.filter(filterCallback(value, inputValue));
+    resultArray = array.filter(filterCallback(value, inputValue));
     return resultArray;
 }
 

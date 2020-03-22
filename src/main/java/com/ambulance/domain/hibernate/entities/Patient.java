@@ -62,7 +62,7 @@ public class Patient extends AbstractAuditableEntity<User, Long> implements Seri
     @NotNull
     private Boolean homeless;
 
-    @Column
+    @Column(length=1048576) // 1 MB of Data should be more than enough.
     @NotEmpty
     private String data;
 }

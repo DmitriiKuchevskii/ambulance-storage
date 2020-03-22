@@ -5,16 +5,17 @@ import com.ambulance.domain.hibernate.entities.User;
 import com.ambulance.domain.hibernate.repository.PatientRepository;
 import com.ambulance.domain.hibernate.repository.UserRepository;
 import com.ambulance.web.AmbulanceApi;
-import com.ambulance.web.requests.UserNameRequest;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
 import com.ambulance.web.exceptions.PatientDoesNotExistException;
 import com.ambulance.web.exceptions.UserAlreadyExistsException;
 import com.ambulance.web.requests.NewUserRequest;
 import com.ambulance.web.requests.PatientIdRequest;
+import com.ambulance.web.requests.UserNameRequest;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -67,6 +68,15 @@ public class AdminController {
     @GetMapping(AmbulanceApi.API_GET_ALL_PATIENTS)
     public ResponseEntity<?> getAllPatients() {
         return ok(patients.findAll());
+    }
+
+    @GetMapping(AmbulanceApi.API_GET_ALL_CURRENT_USER_PATIENTS)
+    public ResponseEntity<?> getAllCurrentUserPatients() {
+        String curUserName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User curUser = users.findByUsername(curUserName)
+                .orElseThrow(() -> new UsernameNotFoundException(curUserName));
+
+        return ok(patients.findAllPatientInfoOnlyByCreatedBy(curUser));
     }
 
     @DeleteMapping(AmbulanceApi.API_REMOVE_PATIENT)

@@ -14,6 +14,8 @@ public final class AmbulanceApi {
 
     public final static String API_GET_ALL_PATIENTS = "/GetAllPatients";
 
+    public final static String API_GET_ALL_CURRENT_USER_PATIENTS = "/GetAllCurrentUserPatients";
+
     public final static String API_REMOVE_PATIENT = "/RemovePatient";
 
     public final static String API_ADD_PATIENT = "/AddPatient";
